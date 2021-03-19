@@ -1,7 +1,7 @@
 const algoliaPlacesApiAppId = 'plU4N8HG6QWK';
 const algoliaPlacesApiKey = '1131438afb49f60a48ed468c5af189b8';
-const mapboxApiToken = 'pk.eyJ1Ijoia3Jva3JvYiIsImEiOiJja2YzcmcyNDkwNXVpMnRtZGwxb2MzNWtvIn0.69leM_6Roh26Ju7Lqb2pwQ';
-const taxiFareApiUrl = 'http://localhost:8000/predict_fare/';
+const mapboxApiToken = 'pk.eyJ1IjoiZGplYmVsdiIsImEiOiJja21nYm9wZ3YwN3c0MnFxbDRwa2FrYnJxIn0.UWtx_1bG4_SSJTSgWSsRgw';
+const taxiFareApiUrl = 'https://wagon-cloud-project-api-docker-nl6ocut3fa-ew.a.run.app/predict_fare';
 
 const displayMap = (start, stop) => {
   mapboxgl.accessToken = mapboxApiToken;
@@ -195,7 +195,12 @@ const predict = () => {
       Object.keys(data).forEach((param) => {
         query.push(`${param}=${data[param]}`)
       })
+
+
+    
+
       const querystring = query.join('&')
+      
       const url = `${taxiFareApiUrl}?${querystring}`
       fetch(url, {
         method: 'GET',
@@ -207,7 +212,7 @@ const predict = () => {
       .then(data => {
         document.getElementById('fare').classList.remove('d-none');
         const fareResult = document.getElementById('predicted-fare');
-        const fare = Math.round(data['prediction'] * 100) / 100
+        const fare = Math.round(data['Fare_pred'] * 100) / 100
         fareResult.innerText = `$${fare}`;
       })
       .catch((error) => {
